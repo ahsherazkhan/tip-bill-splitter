@@ -1,6 +1,6 @@
 # User Stories
 
-Every story serves one job from the jobs document. A story is Implemented only when every one of its criteria has passed. Otherwise it is Not implemented, and a note names the criteria that have no evidence yet.
+Every story serves one job from the jobs document. A story is Implemented only when every one of its criteria is covered by a passing automated test or by a manual check confirmed in a browser. Otherwise it is Not implemented, and a note names the criteria that have no evidence. The automated tests never load the page: they run the logic, and the page's script against a stand-in page. A criterion that depends on the page itself counts only with a manual check confirmed in Chrome and Safari. The results are in docs/test-report.md.
 
 How to read the criteria:
 - Bill, Tip % and People are the three entries. The page opens with Bill empty, Tip % showing 15 and People showing 2.
@@ -9,11 +9,11 @@ How to read the criteria:
 - Amounts have two decimals, with no currency symbol and no thousands separators.
 - Messages are quoted exactly as the page shows them. In a criterion about one entry, the other two entries are valid, so only that entry shows a message.
 
-## S-1 (serves J-1, Not implemented): See what everyone owes
+## S-1 (serves J-1, Implemented): See what everyone owes
 
 As a Table Payer, I want to enter the bill, the tip and the number of people and see the tip, the total and what each person pays, so that I can ask each person for the right amount straight away.
 
-Status note: no evidence yet for S-1.1 to S-1.8.
+Evidence: S-1.1 by a manual check in Chrome and Safari; S-1.2 to S-1.8 by automated tests only, which never load the page.
 
 Acceptance criteria:
 - S-1.1 Given I open the page, when it has loaded, then Bill is empty, Tip % shows 15, People shows 2, and there is no error message and no result.
@@ -25,11 +25,11 @@ Acceptance criteria:
 - S-1.7 Given Bill is 100 and People is 1, when I enter Tip % as ".5", "5." or "0015.00", then there is no error message and the tip amount is 0.50, 5.00 and 15.00 respectively.
 - S-1.8 Given Bill is 100 and Tip % is 15, when I enter People as "04" or "4" with spaces, tabs or non-breaking spaces around it, then there is no error message and Each person pays lists 28.75 four times.
 
-## S-2 (serves J-2, Not implemented): Set the tip
+## S-2 (serves J-2, Implemented): Set the tip
 
 As a Table Payer, I want to set the tip as a percentage and see what it comes to in money, so that I can agree on a tip that feels fair without guessing.
 
-Status note: no evidence yet for S-2.1 to S-2.6.
+Evidence: S-2.1 to S-2.6 by automated tests only, which never load the page.
 
 Acceptance criteria:
 - S-2.1 Given Bill is 100 and People is 2, when I change Tip % from 15 to 20, then the tip amount is 20.00, the total is 120.00 and Each person pays lists 60.00 and 60.00.
@@ -39,11 +39,11 @@ Acceptance criteria:
 - S-2.5 Given Tip % is 15 and People is 1, when I enter 0.30 in Bill, then the tip amount is 0.05 (0.045 rounded half-up) and the total is 0.35.
 - S-2.6 Given Tip % is 15 and People is 1, when I enter 10.01 in Bill, then the tip amount is 1.50, and when I change Bill to 10.05, then the tip amount is 1.51.
 
-## S-3 (serves J-3, Not implemented): Share out the odd cents
+## S-3 (serves J-3, Implemented): Share out the odd cents
 
 As a Table Payer, I want to be told how the extra cents are shared out when the total does not divide evenly, so that what I collect adds up exactly to what I paid.
 
-Status note: no evidence yet for S-3.1 to S-3.7.
+Evidence: S-3.1 to S-3.7 by automated tests only, which never load the page.
 
 Acceptance criteria:
 - S-3.1 Given Tip % is 0 and People is 3, when I enter 100 in Bill, then the total is 100.00, Each person pays lists 33.34, 33.33 and 33.33, and the note "The total does not divide evenly. The first person pays 1 cent more." is shown.
@@ -54,11 +54,11 @@ Acceptance criteria:
 - S-3.6 Given any valid Bill, Tip % and People, when I enter them, then the amounts in Each person pays add up exactly to the total, no two of them differ by more than 1 cent, and the larger amounts come first.
 - S-3.7 Given Tip % is 18 and People is 3, when I enter 100.00 in Bill, then the tip amount is 18.00, the total is 118.00, Each person pays lists 39.34, 39.33 and 39.33, and the note "The total does not divide evenly. The first person pays 1 cent more." is shown.
 
-## S-4 (serves J-4, Not implemented): Get a clear message for an unusable entry
+## S-4 (serves J-4, Implemented): Get a clear message for an unusable entry
 
 As a Table Payer, I want a clear message under any entry that cannot be used, so that I can correct the figure and never act on an amount built from a wrong one.
 
-Status note: no evidence yet for S-4.1 to S-4.16.
+Evidence: S-4.15 by a manual check in Chrome and Safari; S-4.1 to S-4.14 and S-4.16 by automated tests only, which never load the page.
 
 Acceptance criteria:
 - S-4.1 Given Tip % is 15 and People is 2, when Bill is not a number written with digits and at most one decimal point, such as "abc", "1,5", "-5", "+5", "1e3", "4 2", ".", "1.2.3" or "٣", then "Enter the bill using only digits and a decimal point, like 42.50." appears under Bill and there is no result.
@@ -78,11 +78,11 @@ Acceptance criteria:
 - S-4.15 Given an entry cannot be used, when its message appears, then the message is directly under that entry and no other entry, inside a box marked aria-live="polite" that the entry is linked to with aria-describedby.
 - S-4.16 Given any text in Bill, Tip % and People, including very long text, when I enter it, then no message, amount or note that the page produces contains NaN, Infinity, undefined or exponent notation.
 
-## S-5 (serves J-4, Not implemented): Amounts follow every change
+## S-5 (serves J-4, Implemented): Amounts follow every change
 
 As a Table Payer, I want the amounts to follow every change I make, so that I never read out a figure that no longer matches what I entered.
 
-Status note: no evidence yet for S-5.1 to S-5.7.
+Evidence: S-5.1 to S-5.6 by a manual check in Chrome and Safari; S-5.7 by automated tests only, which never load the page.
 
 Acceptance criteria:
 - S-5.1 Given a result is showing for Bill 100, Tip % 15 and People 2, when I change People to 4, then the total stays 115.00 and Each person pays lists 28.75 four times in place of 57.50 twice.
@@ -93,11 +93,11 @@ Acceptance criteria:
 - S-5.6 Given Tip % is 15, People is 1 and Bill is empty, when I type 1, then 2, then 5 into Bill, then after each character the tip amount and total are 0.15 and 1.15, then 1.80 and 13.80, then 18.75 and 143.75, without my pressing anything.
 - S-5.7 Given any Bill, Tip % and People, when I enter them, then the page never shows a result and an error message at the same time.
 
-## S-6 (serves J-4, Not implemented): Start again
+## S-6 (serves J-4, Implemented): Start again
 
 As a Table Payer, I want to clear everything and start again, so that nothing from the last bill carries over into the next one.
 
-Status note: no evidence yet for S-6.1 to S-6.4.
+Evidence: S-6.1 to S-6.3 by a manual check in Chrome and Safari; S-6.4 by automated tests only, which never load the page.
 
 Acceptance criteria:
 - S-6.1 Given I have entered a Bill, changed Tip % to 20 and People to 4, and a result is showing, when I choose Reset, then Bill is empty, Tip % shows 15, People shows 2 and no result is shown.

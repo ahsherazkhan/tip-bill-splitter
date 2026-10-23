@@ -197,3 +197,101 @@ test('DOCS-9 every story has a valid status, and a status note naming its own cr
     }
   }
 });
+
+function storySections() {
+  return stories.split(/^## /m).slice(1).filter((section) => /^S-\d+ /.test(section));
+}
+
+function ownCriteria(section, story) {
+  return [...section.matchAll(new RegExp('^- (' + story + '\\.\\d+) ', 'gm'))].map((match) => match[1]);
+}
+
+// "S-4.1 to S-4.14 and S-4.16" gives S-4.1 up to S-4.14, and S-4.16.
+function namedIds(text) {
+  const ids = [];
+  for (const match of text.matchAll(/(S-\d+)\.(\d+)(?: to (S-\d+)\.(\d+))?/g)) {
+    const first = Number(match[2]);
+    const last = match[3] === undefined ? first : Number(match[4]);
+    for (let n = first; n <= last; n += 1) {
+      ids.push(`${match[1]}.${n}`);
+    }
+  }
+  return ids;
+}
+
+function reportRows() {
+  const rows = new Map();
+  for (const line of read('docs', 'test-report.md').split('\n')) {
+    const match = /^\| (S-\d+\.\d+) \| (.+) \| (pass|fail|not confirmed|not built) \|$/.exec(line);
+    if (match) {
+      rows.set(match[1], { how: match[2], result: match[3] });
+    }
+  }
+  return rows;
+}
+
+test('DOCS-10 every status matches the evidence in the test report', () => {
+  const rows = reportRows();
+  for (const section of storySections()) {
+    const heading = /^(S-\d+) \(serves (J-\d+), (Implemented|Not implemented)\): /.exec(section);
+    const story = heading[1];
+    const own = ownCriteria(section, story);
+    const unproven = own.filter((id) => !(rows.has(id) && rows.get(id).result === 'pass'));
+    if (heading[3] === 'Implemented') {
+      assert.deepEqual(unproven, [], `${story} is Implemented but these criteria do not pass in the test report: ${unproven.join(', ')}`);
+    } else {
+      assert.ok(unproven.length > 0, `${story} is Not implemented but every criterion passes in the test report`);
+      const note = /^Status note: (.*)$/m.exec(section);
+      assert.deepEqual(namedIds(note[1]), unproven, `${story}: the status note must name exactly the criteria without evidence`);
+    }
+  }
+});
+
+test('DOCS-11 the test report has one row per criterion, naming a real test or the manual check', () => {
+  const rows = reportRows();
+  const ids = criterionIds();
+  assert.deepEqual([...rows.keys()], ids, 'the report rows must be the criteria, in the order of the stories doc');
+  const names = testNames();
+  for (const id of ids) {
+    const { how, result } = rows.get(id);
+    if (NOT_BUILT.includes(id)) {
+      assert.equal(how, 'none, not built', `${id}: how verified`);
+      assert.equal(result, 'not built', `${id}: result`);
+    } else if (MANUAL.includes(id)) {
+      const confirmed = how === 'manual, confirmed by me' && (result === 'pass' || result === 'fail');
+      const unconfirmed = how === 'manual, not confirmed' && result === 'not confirmed';
+      assert.ok(confirmed || unconfirmed, `${id}: a manual row says "manual, confirmed by me" with pass or fail, or "manual, not confirmed" with not confirmed`);
+    } else {
+      assert.ok(result === 'pass' || result === 'fail', `${id}: an automated row says pass or fail`);
+      for (const name of how.split('; ')) {
+        assert.ok(names.includes(name), `${id}: no test is named "${name}"`);
+        assert.ok(name.startsWith(id + ' '), `${id}: the test "${name}" does not start with this criterion id`);
+      }
+    }
+  }
+});
+
+test('DOCS-12 every Implemented story says what it rests on, and says the automated tests never load the page', () => {
+  for (const section of storySections()) {
+    const heading = /^(S-\d+) \(serves (J-\d+), (Implemented|Not implemented)\): /.exec(section);
+    if (heading[3] !== 'Implemented') {
+      continue;
+    }
+    const story = heading[1];
+    const own = ownCriteria(section, story);
+    const evidence = /^Evidence: (.*)$/m.exec(section);
+    assert.ok(evidence !== null, `${story} is Implemented but has no Evidence line`);
+    const covered = [];
+    for (const part of evidence[1].replace(/\.$/, '').split('; ')) {
+      const ids = namedIds(part);
+      if (part.includes('by a manual check')) {
+        assert.ok(ids.every((id) => MANUAL.includes(id)), `${story}: "${part}" puts a criterion that is not on the manual list under the manual check`);
+      } else {
+        assert.ok(part.includes('by automated tests only, which never load the page'), `${story}: "${part}" must say it rests on automated tests only, which never load the page`);
+        assert.ok(ids.every((id) => !MANUAL.includes(id)), `${story}: "${part}" puts a manual-list criterion under automated tests only`);
+      }
+      covered.push(...ids);
+    }
+    assert.deepEqual([...covered].sort(), [...own].sort(), `${story}: the Evidence line must name every criterion once`);
+  }
+});
