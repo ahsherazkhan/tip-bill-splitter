@@ -16,7 +16,7 @@ npm test
 
 ## Browsers tested
 
-I opened the page myself in each browser and typed the entries by hand, as a normal user would.
+In each browser I opened the page myself by double-clicking `src/index.html` (a `file://` open) and typed the entries by hand, as a normal user would.
 
 | Browser | Version | Operating system | Date | Checks | Run by |
 | --- | --- | --- | --- | --- | --- |
@@ -100,7 +100,6 @@ I did not record results for these, so none of them is confirmed.
 
 - The automated tests never load the page (see above).
 - The three checks under "Other checks": 320 px wide, keyboard only and reload.
-- How the page was opened in each browser (by double-clicking src/index.html or from a local server) was not recorded.
 - Other browsers, browser versions, operating systems, phones, tablets and on-screen keyboards. No results are recorded for them.
 - Screen readers. PAGE-4 checks the aria markup as text only. The Result box is not a live region, so a screen reader may not announce changes to it. No story requires that.
 - Short phone screens. In a 320 by 568 window with Bill 42.50, Tip % 18 and People 3, the Result box runs from 393 px to 669 px down the page, so the end of the list and the note are off screen until you scroll. Measured in an emulated window in a preview browser, not confirmed in Chrome or Safari. An on-screen keyboard would hide more.
