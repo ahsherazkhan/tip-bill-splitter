@@ -1,0 +1,5 @@
+# App Roles
+
+## Table Payer
+
+A Table Payer is a person having a meal at a restaurant with friends, family or coworkers, anywhere from two people to a large table. The group has agreed to split the bill equally, and this person settles it with the restaurant, so they pay the whole amount and then have to collect each person's share. They want to add a fair tip and tell everyone exactly what they owe, quickly, while the table waits, without doing sums by hand or arguing over odd cents. What they collect has to add up to what they paid, bill and tip together, because any shortfall comes out of their own pocket. They can enter the bill, a tip percentage and the number of people; see the tip, the total (bill plus tip) and each person's share as they type; see how any leftover cents are shared when the total does not divide evenly; get a clear message when something they entered cannot be used; and start again for the next bill. They must never be shown a wrong or out-of-date amount: shares that do not add up exactly to the total, or an earlier result that is still showing after what they entered has changed or stopped being usable.
