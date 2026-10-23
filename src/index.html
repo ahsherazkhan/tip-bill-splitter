@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tip and Bill Splitter</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <h1>Tip and Bill Splitter</h1>
+
+    <div class="field">
+      <label for="bill">Bill</label>
+      <input id="bill" type="text" inputmode="decimal" autocomplete="off" aria-describedby="bill-message" aria-invalid="false">
+      <p id="bill-message" class="message" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="tip">Tip %</label>
+      <input id="tip" type="text" inputmode="decimal" autocomplete="off" aria-describedby="tip-message" aria-invalid="false">
+      <p id="tip-message" class="message" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label for="people">People</label>
+      <input id="people" type="text" inputmode="numeric" autocomplete="off" aria-describedby="people-message" aria-invalid="false">
+      <p id="people-message" class="message" aria-live="polite"></p>
+    </div>
+
+    <button id="reset" type="button">Reset</button>
+
+    <section id="result" class="result" aria-label="Result" hidden>
+      <dl class="amounts">
+        <div class="row"><dt>Tip</dt><dd id="result-tip"></dd></div>
+        <div class="row"><dt>Total</dt><dd id="result-total"></dd></div>
+      </dl>
+      <h2 id="shares-heading">Each person pays</h2>
+      <ol id="result-shares" aria-labelledby="shares-heading"></ol>
+      <p id="result-note"></p>
+    </section>
+  </main>
+
+  <script src="messages.js"></script>
+  <script src="calc.js"></script>
+  <script src="viewmodel.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

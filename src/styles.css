@@ -1,0 +1,133 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.4;
+}
+
+main {
+  max-width: 28rem;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: 1.5rem;
+}
+
+h2 {
+  margin: 1rem 0 0.25rem;
+  font-size: 1.125rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+input {
+  display: block;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #5f5f5f;
+  border-radius: 6px;
+  background: #ffffff;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+}
+
+input[aria-invalid="true"] {
+  border-color: #b00020;
+}
+
+.message {
+  margin: 0;
+  color: #b00020;
+}
+
+.message:not(:empty) {
+  margin-top: 0.25rem;
+}
+
+button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid #1a1a1a;
+  border-radius: 6px;
+  background: #f1f1f1;
+  color: inherit;
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+input:focus,
+button:focus {
+  outline: 3px solid #0b57d0;
+  outline-offset: 2px;
+}
+
+.result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid #c4c4c4;
+  border-radius: 6px;
+}
+
+.amounts {
+  margin: 0;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.25rem 0;
+}
+
+dt {
+  font-weight: 600;
+}
+
+dd {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+ol {
+  margin: 0;
+  padding-left: 2.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+li {
+  padding: 0.125rem 0;
+}
+
+#result-note {
+  margin: 0.75rem 0 0;
+}
+
+#result-note:empty {
+  display: none;
+}
+
+[hidden] {
+  display: none !important;
+}
