@@ -265,3 +265,60 @@ test('S-4.16 edge: viewModel treats missing or odd entries as empty and never th
     assert.deepEqual(view.fields.people, { invalid: true, message: 'Enter the number of people.' });
   }
 });
+
+test('S-4.1 edge: Bill of 1e5 or 12,50 is unusable', () => {
+  for (const bill of ['1e5', '12,50']) {
+    expectCode(validateBill, bill, 'invalid');
+    const view = viewModel({ bill, tip: '15', people: '2' });
+    assert.deepEqual(view.fields.bill, {
+      invalid: true,
+      message: 'Enter the bill using only digits and a decimal point, like 42.50.'
+    });
+    assert.equal(view.result, null);
+  }
+});
+
+test('S-4.6 edge: Tip % of 1e5 or 12,50 is unusable', () => {
+  for (const tip of ['1e5', '12,50']) {
+    expectCode(validateTip, tip, 'invalid');
+    const view = viewModel({ bill: '100', tip, people: '2' });
+    assert.deepEqual(view.fields.tip, {
+      invalid: true,
+      message: 'Enter the tip using only digits and a decimal point, like 15 or 12.5.'
+    });
+    assert.equal(view.result, null);
+  }
+});
+
+test('S-4.10 edge: People of 1e5 or 12,50 is unusable', () => {
+  for (const people of ['1e5', '12,50']) {
+    expectCode(validatePeople, people, 'invalid');
+    const view = viewModel({ bill: '100', tip: '15', people });
+    assert.deepEqual(view.fields.people, {
+      invalid: true,
+      message: 'Enter the number of people as a whole number, like 4.'
+    });
+    assert.equal(view.result, null);
+  }
+});
+
+test('S-4.4 edge: 999999.99 is usable as Bill, above the maximum as Tip % and not a whole number as People', () => {
+  expectValue(validateBill, '999999.99', 99999999);
+  expectCode(validateTip, '999999.99', 'max');
+  expectCode(validatePeople, '999999.99', 'invalid');
+});
+
+test('S-1.5 edge: a bill of 999999.99 at 15% for 2 people works end to end', () => {
+  const view = viewModel({ bill: '999999.99', tip: '15', people: '2' });
+  assert.deepEqual(view.fields, {
+    bill: { invalid: false, message: '' },
+    tip: { invalid: false, message: '' },
+    people: { invalid: false, message: '' }
+  });
+  assert.deepEqual(view.result, {
+    tip: '150000.00',
+    total: '1149999.99',
+    shares: ['575000.00', '574999.99'],
+    note: 'The total does not divide evenly. The first person pays 1 cent more.'
+  });
+});
