@@ -76,7 +76,7 @@ Acceptance criteria:
 - S-4.13 Given Tip % is 15 and People is 2, when Bill is empty or only spaces, then there is no error message and no result.
 - S-4.14 Given Tip % is empty and People is "0", when I enter "abc" in Bill, then each entry shows its own message under it ("Enter the bill using only digits and a decimal point, like 42.50.", "Enter a tip percentage. Use 0 for no tip." and "There must be at least 1 person.") and there is no result.
 - S-4.15 Given an entry cannot be used, when its message appears, then the message is directly under that entry and no other entry, inside a box marked aria-live="polite" that the entry is linked to with aria-describedby.
-- S-4.16 Given any text in Bill, Tip % and People, including very long text, when I enter it, then nothing the page shows contains NaN, Infinity, undefined or exponent notation.
+- S-4.16 Given any text in Bill, Tip % and People, including very long text, when I enter it, then no message, amount or note that the page produces contains NaN, Infinity, undefined or exponent notation.
 
 ## S-5 (serves J-4, Not implemented): Amounts follow every change
 
